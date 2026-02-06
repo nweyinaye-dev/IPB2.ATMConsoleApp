@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace IPB2.ATMConsoleApp.Features.Account
 {
     public class AccountService
     {
-        private List<AccountDto> _accountList = new List<AccountDto>();
-        
+        private List<AccountDto> _accountList = new List<AccountDto>();        
         public ResponseDto CreateAccount(CreateAccountRequestDto request)
         {
             if (string.IsNullOrWhiteSpace(request.Name))
