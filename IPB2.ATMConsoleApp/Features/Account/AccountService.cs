@@ -48,7 +48,6 @@ namespace IPB2.ATMConsoleApp.Features.Account
             _accountList.Add(newAccount);
             return new ResponseDto { IsSuccess = true, Message = "Account created successfully." };
         }
-        
         public ResponseDto LoginAccount(LoginAccountRequestDto requset) {
 
             if (string.IsNullOrWhiteSpace(requset.MobileNo)) { return new ResponseDto { IsSuccess = false,Message = "Mobile is required." };}
@@ -65,7 +64,6 @@ namespace IPB2.ATMConsoleApp.Features.Account
                 Message = "Login successfully."
             };
         }
-        
         public ResponseDto Deposit(DepositRequestDto request)
         {
             if(request.Amount <= 0)
