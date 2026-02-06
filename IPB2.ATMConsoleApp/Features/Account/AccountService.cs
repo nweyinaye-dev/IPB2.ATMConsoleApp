@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace IPB2.ATMConsoleApp.Features.Account
+﻿namespace IPB2.ATMConsoleApp.Features.Account
 {
     public class AccountService
     {

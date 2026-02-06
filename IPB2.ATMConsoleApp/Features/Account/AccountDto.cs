@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IPB2.ATMConsoleApp.Features.Account
+﻿namespace IPB2.ATMConsoleApp.Features.Account
 {
     public class AccountDto
     {
