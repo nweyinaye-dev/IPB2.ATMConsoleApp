@@ -10,6 +10,7 @@ namespace IPB2.ATMConsoleApp.Features.Account
     public class AccountUI
     {
         private AccountService accountService = new AccountService();
+        private string? _loginMobileNo ;
         public void Start()
         {
             while (true) {
@@ -29,13 +30,18 @@ namespace IPB2.ATMConsoleApp.Features.Account
             {
                 case 1: CreateAccont(); break;
                 case 2: EnterAccount(); break;
-                case 3: break;
+                case 3:
+                    {
+                        Console.WriteLine("Thanks for using.");
+                        Exit(); break;
+                    }
                 default: Console.WriteLine("Invalid option.Please try again."); break;
             }
+           
         }
         public void ShowSessionMenu()
         {
-            while (true)
+            while (_loginMobileNo != null)
             {
                 Console.WriteLine("\n*** Session Menu ***");
                 Console.WriteLine("1) Deposit");
@@ -66,16 +72,20 @@ namespace IPB2.ATMConsoleApp.Features.Account
             string password = "";
             string confirmPassword = "";
             Console.WriteLine("\n*** Create Account ***");
+
             Console.Write("Enter your name: ");
             var name = Console.ReadLine() ?? "";
+
             Console.Write("Enter your mobile no: ");
             var mobileNo = Console.ReadLine() ?? "";
 
             while (true) {
                 Console.Write("Enter your password: ");
                  password = Console.ReadLine() ?? "";
+
                 Console.Write("Enter your confirm password: ");
                  confirmPassword = Console.ReadLine() ?? "";
+
                 if (password == confirmPassword) break;
                 Console.WriteLine("Password and confirm password doesn't match.");
             }
@@ -89,19 +99,49 @@ namespace IPB2.ATMConsoleApp.Features.Account
             Console.WriteLine("\n*** Enter Account ***");
             Console.Write("Enter your mobile no: ");
             var mobileNo = Console.ReadLine() ?? "";
+
             Console.Write("Enter your password: ");
             var password = Console.ReadLine() ?? "";
 
             // to check Account
+            var result = accountService.LoginAccount(new LoginAccountRequestDto(mobileNo, password));
+            Console.WriteLine(result.Message);
+            
+            if (!result.IsSuccess)  return;
+            _loginMobileNo = mobileNo.Trim();
             ShowSessionMenu();
 
         }
         public void Deposit() {
             Console.WriteLine("\n*** Deposit ***");
+            Console.Write("Enter amount: ");
+            bool flag = decimal.TryParse(Console.ReadLine(),out decimal amount);
+            if (!flag)
+            {
+                Console.WriteLine("Invalid amount.Please try again.");
+                return;
+            }
+            var response = accountService.Deposit(new DepositRequestDto(amount,_loginMobileNo));
+            Console.WriteLine(response.Message);
         }
-        public void CheckBalance() { Console.WriteLine("\n*** CheckBalance ***"); }
-        public void Withdraw() { Console.WriteLine("\n*** Withdraw ***"); }
-        public void Logout() { Console.WriteLine("\n*** Logout ***"); }
+        public void CheckBalance() { 
+            Console.WriteLine("\n*** CheckBalance ***");
+            var response = accountService.GetBalance(new GetBalanceRequestDto(_loginMobileNo));
+            Console.WriteLine(response.Message);
+        }
+        public void Withdraw() { 
+
+            Console.WriteLine("\n*** Withdraw ***");
+            Console.Write("Enter amount: ");
+            var amount = Console.ReadLine();
+
+            if (!decimal.TryParse(amount, out decimal validAmount)) Console.WriteLine("Invalid amount." );
+
+            var response = accountService.Withdraw(new WithdrawRequestDto(_loginMobileNo,validAmount));
+            Console.WriteLine(response.Message);
+
+        }
+        public void Logout() { _loginMobileNo = null; }
         public void Exit() { Environment.Exit(0); }
     }
 }
