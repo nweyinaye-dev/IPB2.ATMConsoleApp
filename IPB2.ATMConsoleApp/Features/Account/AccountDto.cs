@@ -1,5 +1,6 @@
 ﻿namespace IPB2.ATMConsoleApp.Features.Account
 {
+    // Table
     public class AccountDto
     {
         public AccountDto(string id, string name, string mobileNo,string passsword,decimal balance = 0) {
